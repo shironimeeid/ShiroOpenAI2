@@ -203,27 +203,26 @@ starrailClient.cachedAssetsManager.activateAutoCacheUpdater({
       });
       break;
   }
-          case 'play':
-            case 'song': {
-                if (!text) {
-                    reply("Please provide the name of the song. Example: !play Shape of You");
-                    break;
-                }
-                try {
-                    const search = await yts(text);
-                    if (search.videos.length === 0) {
-                        reply("No videos found for your query.");
-                        break;
-                    }
-                    const video = search.videos[0];
-                    const pl = await xeonplaymp3.mp3(video.url);
-                    reply(`Here's your song: ${pl.url}`);
-                } catch (error) {
-                    console.error(error);
-                    reply("An error occurred while processing your request.");
-                }
-                break;
-              }
+  case 'play':
+    case 'song': {
+        if (!text) return reply(`Example: ${prefix + command} anime whatsapp status`);
+        // Asumsi modul './lib/ytdl' memiliki fungsi 'mp3' yang berfungsi sebagaimana mestinya
+        const xeonplaymp3 = require('./lib/ytdl');
+        let yts = require("youtube-yts");
+    
+        try {
+            let search = await yts(text);
+            if (search.videos.length === 0) return reply("No videos found for your query.");
+            let video = search.videos[0];
+            const mp3Result = await xeonplaymp3.mp3(video.url);
+            if (!mp3Result || !mp3Result.url) return reply("Failed to convert video to mp3.");
+            await client.sendMessage(m.chat, { text: `Here's your song: ${mp3Result.url}` }, { quoted: m });
+        } catch (error) {
+            console.error(error);
+            reply("An error occurred while processing your request.");
+        }
+        break;
+    }
 
 
   case 'randombook':
