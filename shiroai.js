@@ -207,7 +207,7 @@ starrailClient.cachedAssetsManager.activateAutoCacheUpdater({
     case 'song': {
         if (!text) return reply(`Example: ${prefix + command} anime whatsapp status`);
         // Asumsi modul './lib/ytdl' memiliki fungsi 'mp3' yang berfungsi sebagaimana mestinya
-        const xeonplaymp3 = require('./lib/ytdl');
+        const xeonplaymp3 = require('./ytdl');
         let yts = require("youtube-yts");
     
         try {
