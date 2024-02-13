@@ -182,15 +182,27 @@ starrailClient.cachedAssetsManager.activateAutoCacheUpdater({
   }).catch(err => m.reply('Failed to fetch book.'));
   break;
 
-          case 'ai': 
-                   case 'ask':
-                   case 'openai': {
-                         var isiai = await fetchJson(`https://aemt.me/openai?text=${q}`)
-                         var isi = isiai.result
-                        await reply(isi)
-                      }
-                      break
-
+  case 'ai': 
+  case 'ask':
+  case 'openai': {
+      if (!text) return reply("Harap masukkan teks pertanyaan.");
+      const url = `https://aemt.me/openai?text=${encodeURIComponent(text)}`;
+      const fetch = require('node-fetch');
+      fetch(url)
+      .then(response => response.json())
+      .then(data => {
+          if (data && data.result) {
+              reply(data.result);
+          } else {
+              reply("Maaf, terjadi kesalahan saat mengambil data dari OpenAI.");
+          }
+      })
+      .catch(error => {
+          console.error(error);
+          reply("Terjadi kesalahan saat melakukan request ke OpenAI.");
+      });
+      break;
+  }
           case 'play':
             case 'song': {
                 if (!text) {
