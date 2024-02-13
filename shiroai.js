@@ -183,6 +183,29 @@ starrailClient.cachedAssetsManager.activateAutoCacheUpdater({
   break;
 
 
+          case 'play':
+            case 'song': {
+                if (!text) {
+                    reply("Please provide the name of the song. Example: !play Shape of You");
+                    break;
+                }
+                try {
+                    const search = await yts(text);
+                    if (search.videos.length === 0) {
+                        reply("No videos found for your query.");
+                        break;
+                    }
+                    const video = search.videos[0];
+                    const pl = await xeonplaymp3.mp3(video.url);
+                    reply(`Here's your song: ${pl.url}`);
+                } catch (error) {
+                    console.error(error);
+                    reply("An error occurred while processing your request.");
+                }
+                break;
+              }
+
+
   case 'randombook':
   api.getRandomBook().then(book => {
     const coverUrl = api.getImageURL(book.cover);
