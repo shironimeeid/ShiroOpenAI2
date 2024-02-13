@@ -182,6 +182,14 @@ starrailClient.cachedAssetsManager.activateAutoCacheUpdater({
   }).catch(err => m.reply('Failed to fetch book.'));
   break;
 
+          case 'ai': 
+                   case 'ask':
+                   case 'openai': {
+                         var isiai = await fetchJson(`https://aemt.me/openai?text=${q}`)
+                         var isi = isiai.result
+                        await reply(isi)
+                      }
+                      break
 
           case 'play':
             case 'song': {
